@@ -2,17 +2,22 @@ package routers
 
 import (
 	"home-manager/server/internal/application/controllers"
+	chorerepo "home-manager/server/internal/infrastructure/repositories/chore"
+	choreservice "home-manager/server/internal/infrastructure/services/chore"
 
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
+	repo := chorerepo.NewInMemoChoreRepo()
+	cs, _ := choreservice.NewChoresService(repo)
+	cc := chorescontroller.NewChoresController(cs)
 
 	// Public routes
 	public := router.Group("api")
 	{
-		public.GET("/chores", controllers.GetChores)
+		public.GET("/chores", cc.GetChores)
 	}
 
 	// Protected Routes

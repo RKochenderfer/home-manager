@@ -1,4 +1,4 @@
-package utils
+package guards
 
 import (
 	"errors"

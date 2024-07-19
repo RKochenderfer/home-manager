@@ -26,15 +26,15 @@ func (c *Chore) Points() int32 {
 }
 
 func NewChore(id int32, name string, description string, points int32) (*Chore, error) {
-	if err := utils.GuardAgainstEmptyOrWhitespace(name); err != nil {
+	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return nil, err
 	}
 
-	if err := utils.GuardAgainstEmptyOrWhitespace(description); err != nil {
+	if err := guards.GuardAgainstEmptyOrWhitespace(description); err != nil {
 		return nil, err
 	}
 
-	if err := utils.GuardAgainstZeroNegative(points); err != nil {
+	if err := guards.GuardAgainstZeroNegative(points); err != nil {
 		return nil, err
 	}
 
