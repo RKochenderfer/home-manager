@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"home-manager/server/internal/controllers"
+	"home-manager/server/internal/application/controllers"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"home-manager/server/internal/routers"
+	"home-manager/server/internal/application/routers"
 )
 
 func main() {
