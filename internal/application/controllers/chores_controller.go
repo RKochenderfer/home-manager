@@ -32,7 +32,7 @@ func (choresController *ChoresController) GetById(ctx *gin.Context) {
 	id, err := strconv.Atoi(idParam)
 
 	if err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, errors.New("Unable to parse id to integer"))
+		ctx.AbortWithError(http.StatusBadRequest, errors.New("unable to parse id to integer"))
 	}
 
 	chore, err := choresController.choreService.GetById(int32(id))
@@ -41,6 +41,6 @@ func (choresController *ChoresController) GetById(ctx *gin.Context) {
 		ctx.IndentedJSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
 	} else {
 		mapped := models.FromChore(&chore)
-		ctx.IndentedJSON(http.StatusFound, mapped)
+		ctx.IndentedJSON(http.StatusOK, mapped)
 	}
 }
