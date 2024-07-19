@@ -1,13 +1,13 @@
 package chorerepo
 
 import (
-	"fmt"
 	"home-manager/server/internal/core/chore"
+	"home-manager/server/internal/core/internalerrors"
 )
 
 type ChoreRepo interface {
-	GetById(id int32) (*chore.Chore, error)
 	GetAll() ([]*chore.Chore, error)
+	GetById(id int32) (chore.Chore, error)
 }
 
 type InMemChoreRepo struct {
@@ -27,16 +27,16 @@ func NewInMemoChoreRepo() ChoreRepo {
 	return &InMemChoreRepo{chores}
 }
 
-func (repo *InMemChoreRepo) GetById(id int32) (*chore.Chore, error) {
+func (repo *InMemChoreRepo) GetAll() ([]*chore.Chore, error) {
+	return repo.db, nil
+}
+
+func (repo *InMemChoreRepo) GetById(id int32) (chore.Chore, error) {
 	for _, chore := range repo.db {
 		if chore.Id() == id {
-			return chore, nil
+			return *chore, nil
 		}
 	}
 
-	return nil, fmt.Errorf("chore with id: %v was not found", id)
-}
-
-func (repo *InMemChoreRepo) GetAll() ([]*chore.Chore, error) {
-	return repo.db, nil
+	return chore.Chore{}, internalerrors.NotFoundError
 }

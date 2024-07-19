@@ -7,6 +7,7 @@ import (
 
 type ChoresService interface {
 	GetAll() ([]*chore.Chore, error)
+	GetById(id int32) (chore.Chore, error)
 }
 
 type choresService struct {
@@ -19,4 +20,8 @@ func NewChoresService(repo chorerepo.ChoreRepo) (ChoresService, error) {
 
 func (cs *choresService) GetAll() ([]*chore.Chore, error) {
 	return cs.repo.GetAll()
+}
+
+func (cs *choresService) GetById(id int32) (chore.Chore, error) {
+	return cs.repo.GetById(id)
 }
