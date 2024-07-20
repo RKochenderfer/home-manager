@@ -19,6 +19,7 @@ func SetupRouter() *gin.Engine {
 	{
 		public.GET("/chores", cc.GetAll)
 		public.GET("/chores/:id", cc.GetById)
+		public.POST("/chores", cc.Create)
 	}
 
 	// Protected Routes

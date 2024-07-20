@@ -25,18 +25,34 @@ func (c *Chore) Points() int32 {
 	return c.points
 }
 
-func NewChore(id int32, name string, description string, points int32) (*Chore, error) {
+func NewChore(id int32, name string, description string, points int32) (Chore, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
-		return nil, err
+		return Chore{}, err
 	}
 
 	if err := guards.GuardAgainstEmptyOrWhitespace(description); err != nil {
-		return nil, err
+		return Chore{}, err
 	}
 
 	if err := guards.GuardAgainstZeroNegative(points); err != nil {
-		return nil, err
+		return Chore{}, err
 	}
 
-	return &Chore{id, name, description, points}, nil
+	return Chore{id, name, description, points}, nil
+}
+
+func From(name string, description string, points int32) (Chore, error) {
+	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
+		return Chore{}, err
+	}
+
+	if err := guards.GuardAgainstEmptyOrWhitespace(description); err != nil {
+		return Chore{}, err
+	}
+
+	if err := guards.GuardAgainstZeroNegative(points); err != nil {
+		return Chore{}, err
+	}
+
+	return Chore{0, name, description, points}, nil
 }

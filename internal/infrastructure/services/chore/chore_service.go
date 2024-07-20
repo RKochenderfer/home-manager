@@ -2,26 +2,26 @@ package choreservice
 
 import (
 	"home-manager/server/internal/core/entities"
-	"home-manager/server/internal/infrastructure/repositories/chore"
+	"home-manager/server/internal/infrastructure/repositories"
+	"home-manager/server/internal/infrastructure/services"
 )
 
-type ChoresService interface {
-	GetAll() ([]*entities.Chore, error)
-	GetById(id int32) (entities.Chore, error)
+type ChoresService struct {
+	repo repositories.ChoreRepo
 }
 
-type choresService struct {
-	repo chorerepo.ChoreRepo
+func NewChoresService(repo repositories.ChoreRepo) (services.ChoresService, error) {
+	return &ChoresService{repo}, nil
 }
 
-func NewChoresService(repo chorerepo.ChoreRepo) (ChoresService, error) {
-	return &choresService{repo}, nil
-}
-
-func (cs *choresService) GetAll() ([]*entities.Chore, error) {
+func (cs *ChoresService) GetAll() ([]*entities.Chore, error) {
 	return cs.repo.GetAll()
 }
 
-func (cs *choresService) GetById(id int32) (entities.Chore, error) {
+func (cs *ChoresService) GetById(id int32) (entities.Chore, error) {
 	return cs.repo.GetById(id)
+}
+
+func (cs *ChoresService) Create(chore *entities.Chore) (entities.Chore, error) {
+	return cs.repo.Create(chore)
 }

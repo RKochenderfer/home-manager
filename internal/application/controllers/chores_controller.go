@@ -4,8 +4,9 @@ import (
 	"errors"
 	"home-manager/server/internal/application/mappers"
 	"home-manager/server/internal/application/models"
+	"home-manager/server/internal/core/entities"
 	"home-manager/server/internal/core/internalerrors"
-	choreservice "home-manager/server/internal/infrastructure/services/chore"
+	"home-manager/server/internal/infrastructure/services"
 	"net/http"
 	"strconv"
 
@@ -13,21 +14,21 @@ import (
 )
 
 type ChoresController struct {
-	choreService choreservice.ChoresService
+	choreService services.ChoresService
 }
 
-func NewChoresController(cs choreservice.ChoresService) ChoresController {
+func NewChoresController(cs services.ChoresService) ChoresController {
 	return ChoresController{cs}
 }
 
-func (choresController *ChoresController) GetAll(ctx *gin.Context) {
-	chores, _ := choresController.choreService.GetAll()
+func (cc *ChoresController) GetAll(ctx *gin.Context) {
+	chores, _ := cc.choreService.GetAll()
 	choresResponse := mappers.ToChoreListResponse(chores)
 
 	ctx.IndentedJSON(http.StatusOK, choresResponse)
 }
 
-func (choresController *ChoresController) GetById(ctx *gin.Context) {
+func (cc *ChoresController) GetById(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
 
@@ -35,12 +36,31 @@ func (choresController *ChoresController) GetById(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, errors.New("unable to parse id to integer"))
 	}
 
-	chore, err := choresController.choreService.GetById(int32(id))
+	chore, err := cc.choreService.GetById(int32(id))
 
 	if errors.Is(err, internalerrors.NotFoundError) {
-		ctx.IndentedJSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
+		ctx.JSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
 	} else {
 		mapped := models.FromChore(&chore)
-		ctx.IndentedJSON(http.StatusOK, mapped)
+		ctx.JSON(http.StatusOK, mapped)
 	}
+}
+
+func (cc *ChoresController) Create(ctx *gin.Context) {
+	var newChoreReq models.NewChoreRequest
+
+	if err := ctx.BindJSON(&newChoreReq); err != nil {
+		return
+	}
+
+	newChore, err := entities.NewChore(0, newChoreReq.Name, newChoreReq.Description, newChoreReq.Points)
+	if err != nil {
+		return
+	}
+
+	chore, err := cc.choreService.Create(&newChore)
+	if err != nil {
+		return
+	}
+	ctx.JSON(http.StatusCreated, models.FromChore(&chore))
 }
