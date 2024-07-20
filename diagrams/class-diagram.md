@@ -48,5 +48,6 @@ classDiagram
 		-id uint32
 		-user User
 		-reward Reward
+		-redemptionDate DateTime
 	}
 ```
