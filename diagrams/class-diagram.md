@@ -1,25 +1,52 @@
 ```mermaid
 classDiagram
-	Assignment "*" *-- "1" Chore
-	Assignment "*" *-- "1" User
+	Chore "1" *-- "*" Assignment
+	User "1" o-- "*" Assignment
+	User "1" *-- "*" Redemption
+	Room "1" *-- "*" Chore
+	Reward "*" o-- "1" Redemption
 
 	class Chore{
-		-id int32
+		-id uint32
 		-name string
 		-description string
-		-points int32
+		-points uint32
+		-room Room
+		+Assign(user User)
+	}
+
+	class Room {
+		-id uint32
+		-name string
 	}
 
 	class Assignment{
-		-id int32
+		-id uint32
 		-assignedTo User
 		-choreAssigned Chore
 		-scalar string
+		-dueDate DateTime
+		-completedAt 
 	}
 
 	class User{
-		-id int32
+		-id uint32
 		-name string
-		-totalPoints
+		-role string
+		-totalPoints uint32
+		+Redeem(reward Reward)
+	}
+
+	class Reward{
+		-id uint32
+		-name string
+		-description string
+		-cost uint32
+	}
+
+	class Redemption{
+		-id uint32
+		-user User
+		-reward Reward
 	}
 ```
