@@ -1,19 +1,18 @@
-package chorerepo
+package repositories
 
 import (
 	"home-manager/server/internal/core/entities"
-	"home-manager/server/internal/infrastructure/repositories"
 
 	"home-manager/server/internal/core/internalerrors"
 )
 
 var id int32 = 0
 
-type InMemChoreRepo struct {
+type inMemChoreRepo struct {
 	db []*entities.Chore
 }
 
-func NewInMemoChoreRepo() repositories.ChoreRepo {
+func NewInMemChoreRepo() ChoreRepo {
 	a, _ := entities.NewChore(id, "Floorboards", "Clean the dust off the floorboards", 10)
 	id++
 	b, _ := entities.NewChore(id, "Pickup Toys", "Pick toys off floor", 8)
@@ -26,14 +25,14 @@ func NewInMemoChoreRepo() repositories.ChoreRepo {
 		&b,
 		&c,
 	}
-	return &InMemChoreRepo{chores}
+	return &inMemChoreRepo{chores}
 }
 
-func (repo *InMemChoreRepo) GetAll() ([]*entities.Chore, error) {
+func (repo *inMemChoreRepo) GetAll() ([]*entities.Chore, error) {
 	return repo.db, nil
 }
 
-func (repo *InMemChoreRepo) GetById(id int32) (entities.Chore, error) {
+func (repo *inMemChoreRepo) GetById(id int32) (entities.Chore, error) {
 	for _, chore := range repo.db {
 		if chore.Id() == id {
 			return *chore, nil
@@ -43,7 +42,7 @@ func (repo *InMemChoreRepo) GetById(id int32) (entities.Chore, error) {
 	return entities.Chore{}, internalerrors.NotFoundError
 }
 
-func (repo *InMemChoreRepo) Create(chore *entities.Chore) (entities.Chore, error) {
+func (repo *inMemChoreRepo) Create(chore *entities.Chore) (entities.Chore, error) {
 	newChore, err := entities.NewChore(id, chore.Name(), chore.Description(), chore.Points())
 	if err != nil {
 		return entities.Chore{}, err

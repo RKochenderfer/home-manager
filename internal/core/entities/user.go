@@ -20,3 +20,15 @@ func NewUser(id int32, name string, totalPoints int32) (User, error) {
 
 	return User{id, name, totalPoints}, nil
 }
+
+func (u *User) Id() int32 {
+	return u.id
+}
+
+func (u *User) Name() string {
+	return u.name
+}
+
+func (u *User) TotalPoints() int32 {
+	return u.totalPoints
+}

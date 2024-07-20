@@ -7,3 +7,9 @@ type ChoresService interface {
 	GetById(id int32) (entities.Chore, error)
 	Create(chore *entities.Chore) (entities.Chore, error)
 }
+
+type UsersService interface {
+	GetAll() ([]*entities.User, error)
+	GetById(id int32) (entities.User, error)
+	Create(user *entities.User) (entities.User, error)
+}

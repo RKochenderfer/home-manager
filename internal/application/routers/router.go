@@ -1,28 +1,49 @@
 package routers
 
 import (
-	chorescontroller "home-manager/server/internal/application/controllers"
-	chorerepo "home-manager/server/internal/infrastructure/repositories/chore"
-	choreservice "home-manager/server/internal/infrastructure/services/chore"
+	controllers "home-manager/server/internal/application/controllers"
+	"home-manager/server/internal/infrastructure/repositories"
+	"home-manager/server/internal/infrastructure/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
-	repo := chorerepo.NewInMemoChoreRepo()
-	cs, _ := choreservice.NewChoresService(repo)
-	cc := chorescontroller.NewChoresController(cs)
 
 	// Public routes
-	public := router.Group("api")
-	{
-		public.GET("/chores", cc.GetAll)
-		public.GET("/chores/:id", cc.GetById)
-		public.POST("/chores", cc.Create)
-	}
+	setupChoresRoutes(router)
+	setupUsersRoutes(router)
 
 	// Protected Routes
 
 	return router
+}
+
+func setupChoresRoutes(router *gin.Engine) {
+	repo := repositories.NewInMemChoreRepo()
+	cs, _ := services.NewChoresService(repo)
+
+	cc := controllers.NewChoresController(cs)
+
+	chores := router.Group("api/chores")
+	{
+		chores.GET("/", cc.GetAll)
+		chores.GET("/:id", cc.GetById)
+		chores.POST("/", cc.Create)
+	}
+}
+
+func setupUsersRoutes(router *gin.Engine) {
+	repo := repositories.NewInMemUserRepo()
+	us, _ := services.NewUsersService(repo)
+
+	uc := controllers.NewUsersController(us)
+
+	chores := router.Group("api/users")
+	{
+		chores.GET("/", uc.GetAll)
+		chores.GET("/:id", uc.GetById)
+		chores.POST("/", uc.Create)
+	}
 }

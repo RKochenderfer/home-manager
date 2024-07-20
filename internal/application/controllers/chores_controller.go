@@ -1,4 +1,4 @@
-package chorescontroller
+package controllers
 
 import (
 	"errors"
@@ -25,7 +25,7 @@ func (cc *ChoresController) GetAll(ctx *gin.Context) {
 	chores, _ := cc.choreService.GetAll()
 	choresResponse := mappers.ToChoreListResponse(chores)
 
-	ctx.IndentedJSON(http.StatusOK, choresResponse)
+	ctx.JSON(http.StatusOK, choresResponse)
 }
 
 func (cc *ChoresController) GetById(ctx *gin.Context) {
