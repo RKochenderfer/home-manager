@@ -1,4 +1,4 @@
-package user
+package entities
 
 import guards "home-manager/server/internal/core/shared"
 

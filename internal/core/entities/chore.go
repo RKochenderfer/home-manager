@@ -1,6 +1,6 @@
-package chore
+package entities
 
-import "home-manager/server/internal/core/shared"
+import guards "home-manager/server/internal/core/shared"
 
 type Chore struct {
 	id          int32
