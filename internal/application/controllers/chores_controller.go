@@ -53,7 +53,7 @@ func (cc *ChoresController) Create(ctx *gin.Context) {
 		return
 	}
 
-	newChore, err := entities.NewChore(0, newChoreReq.Name, newChoreReq.Description, newChoreReq.Points)
+	newChore, err := entities.NewChore(0, newChoreReq.Name, newChoreReq.Instructions, newChoreReq.Points)
 	if err != nil {
 		return
 	}

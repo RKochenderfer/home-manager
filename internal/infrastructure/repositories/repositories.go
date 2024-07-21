@@ -1,15 +1,15 @@
 package repositories
 
-import "home-manager/server/internal/core/entities"
+import "home-manager/server/internal/infrastructure/db/models"
 
 type ChoreRepo interface {
-	GetAll() ([]*entities.Chore, error)
-	GetById(id int32) (entities.Chore, error)
-	Create(chore *entities.Chore) (entities.Chore, error)
+	GetAll() ([]*models.Chore, error)
+	GetById(id int32) (models.Chore, error)
+	Create(chore *models.Chore) (models.Chore, error)
 }
 
 type UserRepo interface {
-	GetAll() ([]*entities.User, error)
-	GetById(id int32) (entities.User, error)
-	Create(user *entities.User) (entities.User, error)
+	GetAll() ([]*models.User, error)
+	GetById(id int32) (models.User, error)
+	Create(user *models.User) (models.User, error)
 }
