@@ -13,6 +13,10 @@ type Database struct {
 	connection *gorm.DB
 }
 
+func (d *Database) Connection() *gorm.DB {
+	return d.connection
+}
+
 func Init() Database {
 	connString := os.Getenv(shared.EnvConnectionString)
 	env := os.Getenv(shared.Environment)

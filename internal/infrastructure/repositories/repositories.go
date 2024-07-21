@@ -1,6 +1,8 @@
 package repositories
 
-import "home-manager/server/internal/infrastructure/db/models"
+import (
+	"home-manager/server/internal/infrastructure/db/models"
+)
 
 type ChoreRepo interface {
 	GetAll() ([]*models.Chore, error)

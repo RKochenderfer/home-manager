@@ -30,12 +30,12 @@ func (c *Chore) RoomId() int32 {
 	return c.roomId
 }
 
-func NewChore(id int32, name string, description string, points int32, roomId int32) (Chore, error) {
+func NewChore(id int32, name string, instructions string, points int32, roomId int32) (Chore, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return Chore{}, err
 	}
 
-	if err := guards.GuardAgainstEmptyOrWhitespace(description); err != nil {
+	if err := guards.GuardAgainstEmptyOrWhitespace(instructions); err != nil {
 		return Chore{}, err
 	}
 
@@ -43,15 +43,15 @@ func NewChore(id int32, name string, description string, points int32, roomId in
 		return Chore{}, err
 	}
 
-	return Chore{id, name, description, points, roomId}, nil
+	return Chore{id, name, instructions, points, roomId}, nil
 }
 
-func From(name string, description string, points int32, roomId int32) (Chore, error) {
+func From(name string, instructions string, points int32, roomId int32) (Chore, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return Chore{}, err
 	}
 
-	if err := guards.GuardAgainstEmptyOrWhitespace(description); err != nil {
+	if err := guards.GuardAgainstEmptyOrWhitespace(instructions); err != nil {
 		return Chore{}, err
 	}
 
@@ -59,5 +59,5 @@ func From(name string, description string, points int32, roomId int32) (Chore, e
 		return Chore{}, err
 	}
 
-	return Chore{0, name, description, points, roomId}, nil
+	return Chore{0, name, instructions, points, roomId}, nil
 }

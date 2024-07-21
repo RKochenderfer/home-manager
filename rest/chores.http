@@ -15,6 +15,7 @@ Content-Type: "application/json"
 
 {
     "name": "newtest",
-    "description": "description of chore",
-    "points": 8
+    "instructions": "instructions for chore",
+    "points": 8,
+    "roomId": 1
 }

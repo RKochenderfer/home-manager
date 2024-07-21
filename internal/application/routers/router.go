@@ -13,16 +13,16 @@ func SetupRouter(db db.Database) *gin.Engine {
 	router := gin.Default()
 
 	// Public routes
-	setupChoresRoutes(router, db)
-	setupUsersRoutes(router, db)
+	setupChoresRoutes(router, &db)
+	setupUsersRoutes(router, &db)
 
 	// Protected Routes
 
 	return router
 }
 
-func setupChoresRoutes(router *gin.Engine, db db.Database) {
-	repo := repositories.NewInMemChoreRepo()
+func setupChoresRoutes(router *gin.Engine, db *db.Database) {
+	repo := repositories.NewSqliteChoreRepo(db)
 	cs, _ := services.NewChoresService(repo)
 
 	cc := controllers.NewChoresController(cs)
@@ -35,8 +35,8 @@ func setupChoresRoutes(router *gin.Engine, db db.Database) {
 	}
 }
 
-func setupUsersRoutes(router *gin.Engine, db db.Database) {
-	repo := repositories.NewInMemUserRepo()
+func setupUsersRoutes(router *gin.Engine, db *db.Database) {
+	repo := repositories.NewSqliteUserRepo(db)
 	us, _ := services.NewUsersService(repo)
 
 	uc := controllers.NewUsersController(us)

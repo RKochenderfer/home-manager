@@ -1,22 +1,21 @@
 package repositories
 
 import (
+	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/db/models"
-
-	"gorm.io/gorm"
 )
 
 type sqliteChoreRepo struct {
-	db *gorm.DB
+	db *db.Database
 }
 
-func NewSqliteChoreRepo(db *gorm.DB) ChoreRepo {
+func NewSqliteChoreRepo(db *db.Database) ChoreRepo {
 	return &sqliteChoreRepo{db}
 }
 
 // Create implements ChoreRepo.
 func (s *sqliteChoreRepo) Create(toAdd *models.Chore) (models.Chore, error) {
-	if result := s.db.Create(&toAdd); result.Error != nil {
+	if result := s.db.Connection().Create(&toAdd); result.Error != nil {
 		return models.Chore{}, nil
 	}
 
@@ -27,7 +26,7 @@ func (s *sqliteChoreRepo) Create(toAdd *models.Chore) (models.Chore, error) {
 func (s *sqliteChoreRepo) GetAll() ([]*models.Chore, error) {
 	var chores []*models.Chore
 
-	if result := s.db.Find(&chores); result.Error != nil {
+	if result := s.db.Connection().Find(&chores); result.Error != nil {
 		return chores, result.Error
 	}
 
@@ -37,7 +36,7 @@ func (s *sqliteChoreRepo) GetAll() ([]*models.Chore, error) {
 // GetById implements ChoreRepo.
 func (s *sqliteChoreRepo) GetById(id int32) (models.Chore, error) {
 	var chore models.Chore
-	if result := s.db.First(&chore, id); result.Error != nil {
+	if result := s.db.Connection().First(&chore, id); result.Error != nil {
 		return models.Chore{}, result.Error
 	}
 
