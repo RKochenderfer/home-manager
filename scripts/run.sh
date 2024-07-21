@@ -4,4 +4,4 @@ cd "$(dirname $0)"
 cd ../cmd
 go fmt ...
 go mod tidy
-go run .
+ENVIRONMENT=DEVELOPMENT DB_CONNECTION_STRING=test.sqlite3 go run .

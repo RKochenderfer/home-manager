@@ -3,6 +3,7 @@
 		"chorerepo",
 		"chorescontroller",
 		"choreservice",
+		"gorm",
 		"internalerrors"
 	],
 	"git.ignoreLimitWarning": true

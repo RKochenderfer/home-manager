@@ -2,25 +2,26 @@ package routers
 
 import (
 	controllers "home-manager/server/internal/application/controllers"
+	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/repositories"
 	"home-manager/server/internal/infrastructure/services"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(db db.Database) *gin.Engine {
 	router := gin.Default()
 
 	// Public routes
-	setupChoresRoutes(router)
-	setupUsersRoutes(router)
+	setupChoresRoutes(router, db)
+	setupUsersRoutes(router, db)
 
 	// Protected Routes
 
 	return router
 }
 
-func setupChoresRoutes(router *gin.Engine) {
+func setupChoresRoutes(router *gin.Engine, db db.Database) {
 	repo := repositories.NewInMemChoreRepo()
 	cs, _ := services.NewChoresService(repo)
 
@@ -34,7 +35,7 @@ func setupChoresRoutes(router *gin.Engine) {
 	}
 }
 
-func setupUsersRoutes(router *gin.Engine) {
+func setupUsersRoutes(router *gin.Engine, db db.Database) {
 	repo := repositories.NewInMemUserRepo()
 	us, _ := services.NewUsersService(repo)
 

@@ -1,4 +1,4 @@
-package guards
+package shared
 
 import (
 	"errors"
