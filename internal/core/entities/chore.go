@@ -2,6 +2,7 @@ package entities
 
 import guards "home-manager/server/internal/core/shared"
 
+// TODO: Refactor this into value object as it appears that in the design, we don't care about the specific chore, just what chores are in what room
 type Chore struct {
 	id           int32
 	name         string

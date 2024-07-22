@@ -15,3 +15,9 @@ type UserRepo interface {
 	GetById(id int32) (models.User, error)
 	Create(user *models.User) (models.User, error)
 }
+
+type RoomRepo interface {
+	GetAll() ([]*models.Room, error)
+	GetById(id int32) (models.Room, error)
+	Create(user *models.Room) (models.Room, error)
+}
