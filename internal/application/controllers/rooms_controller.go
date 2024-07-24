@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"home-manager/server/internal/application/mappers"
 	"home-manager/server/internal/application/models"
 	"home-manager/server/internal/core/entities"
@@ -50,6 +51,7 @@ func (rc *RoomsController) Create(ctx *gin.Context) {
 	var newRoomReq models.RoomRequest
 
 	if err := ctx.BindJSON(&newRoomReq); err != nil {
+		fmt.Printf("%s", err.Error())
 		return
 	}
 

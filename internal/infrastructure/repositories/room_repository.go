@@ -14,16 +14,31 @@ func NewSqliteRoomRepo(db *db.Database) RoomRepo {
 }
 
 // Create implements RoomRepo.
-func (s *sqliteRoomRepo) Create(user *models.Room) (models.Room, error) {
-	panic("unimplemented")
+func (s *sqliteRoomRepo) Create(toAdd *models.Room) (models.Room, error) {
+	if result := s.db.Connection().Create(&toAdd); result.Error != nil {
+		return models.Room{}, nil
+	}
+
+	return s.GetById(int32(toAdd.ID))
 }
 
 // GetAll implements RoomRepo.
 func (s *sqliteRoomRepo) GetAll() ([]*models.Room, error) {
-	panic("unimplemented")
+	var rooms []*models.Room
+
+	if result := s.db.Connection().Find(&rooms); result.Error != nil {
+		return rooms, result.Error
+	}
+
+	return rooms, nil
 }
 
 // GetById implements RoomRepo.
 func (s *sqliteRoomRepo) GetById(id int32) (models.Room, error) {
-	panic("unimplemented")
+	var room models.Room
+	if result := s.db.Connection().First(&room, id); result.Error != nil {
+		return models.Room{}, result.Error
+	}
+
+	return room, nil
 }
