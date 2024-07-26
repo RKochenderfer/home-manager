@@ -3,11 +3,19 @@ package models
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
-type User struct {
-	gorm.Model
+type Base struct {
+	ID          uuid.UUID `gorm:"primaryKey;type:uuid"`
+	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	DeleteAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+}
+
+type User struct { 
+	Base
 	Name        string `gorm:"index"`
 	TotalPoints uint
 	Role        string `gorm:"size:20;index"`

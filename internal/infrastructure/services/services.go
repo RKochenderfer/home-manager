@@ -3,6 +3,8 @@ package services
 import (
 	"home-manager/server/internal/core/entities"
 	"home-manager/server/internal/core/valueobjects"
+
+	"github.com/google/uuid"
 )
 
 type ChoresService interface {
@@ -13,7 +15,7 @@ type ChoresService interface {
 
 type UsersService interface {
 	GetAll() ([]*entities.User, error)
-	GetById(id int32) (*entities.User, error)
+	GetById(id uuid.UUID) (*entities.User, error)
 	Create(user *entities.User) (*entities.User, error)
 }
 

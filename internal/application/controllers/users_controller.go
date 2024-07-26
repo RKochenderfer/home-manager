@@ -8,9 +8,9 @@ import (
 	"home-manager/server/internal/core/internalerrors"
 	"home-manager/server/internal/infrastructure/services"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UsersController struct {
@@ -30,13 +30,13 @@ func (uc *UsersController) GetAll(ctx *gin.Context) {
 
 func (uc *UsersController) GetById(ctx *gin.Context) {
 	idParam := ctx.Param("id")
-	id, err := strconv.Atoi(idParam)
-
+	
+	parsed, err := uuid.Parse(idParam)
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, errors.New("unable to parse id to integer"))
 	}
 
-	user, err := uc.usersService.GetById(int32(id))
+	user, err := uc.usersService.GetById(parsed)
 
 	if errors.Is(err, internalerrors.NotFoundError) {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
@@ -53,7 +53,7 @@ func (uc *UsersController) Create(ctx *gin.Context) {
 		return
 	}
 
-	newUser, err := entities.NewUser(0, newUserReq.Name, 0, newUserReq.Role)
+	newUser, err := entities.NewUser(newUserReq.Name, 0, newUserReq.Role)
 	if err != nil {
 		return
 	}

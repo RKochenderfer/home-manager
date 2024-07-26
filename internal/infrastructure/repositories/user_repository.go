@@ -3,6 +3,8 @@ package repositories
 import (
 	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/db/models"
+
+	"github.com/google/uuid"
 )
 
 type sqliteUserRepo struct {
@@ -19,7 +21,7 @@ func (s *sqliteUserRepo) Create(user *models.User) (models.User, error) {
 		return models.User{}, nil
 	}
 
-	return s.GetById(int32(user.ID))
+	return s.GetById(user.ID)
 }
 
 // GetAll implements UserRepo.
@@ -34,7 +36,7 @@ func (s *sqliteUserRepo) GetAll() ([]*models.User, error) {
 }
 
 // GetById implements UserRepo.
-func (s *sqliteUserRepo) GetById(id int32) (models.User, error) {
+func (s *sqliteUserRepo) GetById(id uuid.UUID) (models.User, error) {
 	var user models.User
 	if result := s.db.Connection().First(&user, id); result.Error != nil {
 		return models.User{}, result.Error

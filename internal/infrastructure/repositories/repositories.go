@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"home-manager/server/internal/infrastructure/db/models"
+
+	"github.com/google/uuid"
 )
 
 type ChoreRepo interface {
@@ -12,7 +14,7 @@ type ChoreRepo interface {
 
 type UserRepo interface {
 	GetAll() ([]*models.User, error)
-	GetById(id int32) (models.User, error)
+	GetById(id uuid.UUID) (models.User, error)
 	Create(user *models.User) (models.User, error)
 }
 

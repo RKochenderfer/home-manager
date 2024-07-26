@@ -5,6 +5,8 @@ import (
 	"home-manager/server/internal/core/entities"
 	"home-manager/server/internal/infrastructure/db/models"
 	"home-manager/server/internal/infrastructure/repositories"
+
+	"github.com/google/uuid"
 )
 
 type usersService struct {
@@ -17,6 +19,7 @@ func NewUsersService(repo repositories.UserRepo) (UsersService, error) {
 
 func (u *usersService) Create(user *entities.User) (*entities.User, error) {
 	dbUser, err := u.repo.Create(&models.User{
+		Base: models.Base{ID: user.Id() },
 		Name: user.Name(),
 		TotalPoints: uint(user.TotalPoints()),
 		Role: string(user.Role()),
@@ -26,7 +29,7 @@ func (u *usersService) Create(user *entities.User) (*entities.User, error) {
 		return nil, err
 	}
 
-	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Name))
+	return entities.From(dbUser.ID, dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Role))
 }
 
 func (u *usersService) GetAll() ([]*entities.User, error) {
@@ -38,7 +41,7 @@ func (u *usersService) GetAll() ([]*entities.User, error) {
 	}
 
 	for _, u := range dbUsers {
-		ec, err := entities.NewUser(int32(u.ID), u.Name, int32(u.TotalPoints), entities.Role(u.Role))
+		ec, err := entities.From(u.ID, u.Name, int32(u.TotalPoints), entities.Role(u.Role))
 		if err != nil {
 			fmt.Printf("%s", err.Error())
 			continue
@@ -49,11 +52,11 @@ func (u *usersService) GetAll() ([]*entities.User, error) {
 	return users, nil
 }
 
-func (u *usersService) GetById(id int32) (*entities.User, error) {
+func (u *usersService) GetById(id uuid.UUID) (*entities.User, error) {
 	dbUser, err := u.repo.GetById(id)
 	if err != nil {
 		return nil, err
 	}
 
-	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Role))
+	return entities.From(dbUser.ID, dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Role))
 }
