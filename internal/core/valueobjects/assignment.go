@@ -13,19 +13,36 @@ type Assignment struct {
 	status        AssignmentStatus
 }
 
-func (a *Assignment) GetAssignedTo() entities.User {
+// PartialEq implements ValueObject.
+func (a Assignment) PartialEq(v ValueObject) bool {
+	other, ok := v.(Assignment)
+	if !ok {
+		return false
+	}
+
+	return a.assignedTo == other.AssignedTo() &&
+		a.choreAssigned == other.ChoreAssigned() &&
+		a.scalar == other.Scalar() &&
+		a.status == other.Status()
+}
+
+func (a *Assignment) AssignedTo() entities.User {
 	return a.assignedTo
 }
 
-func (a *Assignment) GetChoreAssigned() Chore {
+func (a *Assignment) ChoreAssigned() Chore {
 	return a.choreAssigned
 }
 
-func (a *Assignment) GetScalar() string {
+func (a *Assignment) Scalar() string {
 	return a.scalar
 }
 
-func NewAssignment(assignedTo entities.User, choreAssigned Chore, scalar string, assignmentStatus AssignmentStatus) (Assignment, error) {
+func (a *Assignment) Status() AssignmentStatus {
+	return a.status
+}
+
+func NewAssignment(assignedTo entities.User, choreAssigned Chore, scalar string, assignmentStatus AssignmentStatus) (ValueObject, error) {
 	err := guards.GuardAgainstEmptyOrWhitespace(scalar)
 	if err != nil {
 		return Assignment{}, err
@@ -43,9 +60,9 @@ var AssignmentStatusEnum = struct {
 	Completed      AssignmentStatus
 	Canceled       AssignmentStatus
 }{
-	NotStarted: "NotStarted",
-	Started: "Started",
+	NotStarted:     "NotStarted",
+	Started:        "Started",
 	ReadyForReview: "ReadyForReview",
-	Completed: "Completed",
-	Canceled: "Canceled",
+	Completed:      "Completed",
+	Canceled:       "Canceled",
 }
