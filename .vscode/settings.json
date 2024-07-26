@@ -9,7 +9,6 @@
 		"valueobjects"
 	],
 	"git.ignoreLimitWarning": true,
-	"gopls": { "ui.semanticTokens": true },
 	"[go]": {
 		"editor.formatOnSave": true
 	}

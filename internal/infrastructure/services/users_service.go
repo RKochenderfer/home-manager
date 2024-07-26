@@ -19,6 +19,7 @@ func (u *usersService) Create(user *entities.User) (entities.User, error) {
 	dbUser, err := u.repo.Create(&models.User{
 		Name: user.Name(),
 		TotalPoints: uint(user.TotalPoints()),
+		Role: string(user.Role()),
 	})
 
 	if err != nil {

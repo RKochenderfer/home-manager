@@ -11,6 +11,21 @@ type Chore struct {
 	roomId       int32
 }
 
+// eq implements ValueObject.
+func (c Chore) PartialEq(v ValueObject) bool {
+	other, ok := v.(Chore)
+
+	if !ok {
+		return false
+	}
+
+	return c.id == other.id &&
+		c.name == other.name &&
+		c.instructions == other.instructions &&
+		c.points == other.points &&
+		c.roomId == other.roomId
+}
+
 func (c *Chore) Id() int32 {
 	return c.id
 }
@@ -31,7 +46,7 @@ func (c *Chore) RoomId() int32 {
 	return c.roomId
 }
 
-func NewChore(id int32, name string, instructions string, points int32, roomId int32) (Chore, error) {
+func NewChore(id int32, name string, instructions string, points int32, roomId int32) (ValueObject, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return Chore{}, err
 	}

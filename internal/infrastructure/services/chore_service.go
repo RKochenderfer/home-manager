@@ -24,11 +24,14 @@ func (cs *choresService) GetAll() ([]*valueobjects.Chore, error) {
 	}
 
 	for _, c := range dbChores {
-		ec, err := valueobjects.NewChore(int32(c.ID), c.Name, c.Instructions, int32(c.Points), int32(c.RoomID))
+		vo, err := valueobjects.NewChore(int32(c.ID), c.Name, c.Instructions, int32(c.Points), int32(c.RoomID))
+
 		if err != nil {
 			fmt.Printf("%s", err.Error())
 			continue
 		}
+		ec, _ := vo.(valueobjects.Chore)
+
 		chores = append(chores, &ec)
 	}
 
@@ -41,7 +44,13 @@ func (cs *choresService) GetById(id int32) (valueobjects.Chore, error) {
 		return valueobjects.Chore{}, err
 	}
 
-	return valueobjects.NewChore(int32(dbChore.ID), dbChore.Name, dbChore.Instructions, int32(dbChore.Points), int32(dbChore.RoomID))
+	vo, err := valueobjects.NewChore(int32(dbChore.ID), dbChore.Name, dbChore.Instructions, int32(dbChore.Points), int32(dbChore.RoomID))
+	if err != nil {
+		return valueobjects.Chore{}, nil
+	}
+	chore, _ := vo.(valueobjects.Chore)
+	
+	return chore, nil
 }
 
 func (cs *choresService) Create(chore *valueobjects.Chore) (valueobjects.Chore, error) {
@@ -56,5 +65,11 @@ func (cs *choresService) Create(chore *valueobjects.Chore) (valueobjects.Chore, 
 		return valueobjects.Chore{}, err
 	}
 
-	return valueobjects.NewChore(int32(dbChore.ID), dbChore.Name, dbChore.Instructions, int32(dbChore.Points), int32(dbChore.RoomID))
+	vo, err := valueobjects.NewChore(int32(dbChore.ID), dbChore.Name, dbChore.Instructions, int32(dbChore.Points), int32(dbChore.RoomID))
+	if err != nil {
+		return valueobjects.Chore{}, nil
+	}
+	c, _ := vo.(valueobjects.Chore)
+
+	return c, nil
 }
