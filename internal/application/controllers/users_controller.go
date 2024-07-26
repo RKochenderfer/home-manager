@@ -53,7 +53,7 @@ func (uc *UsersController) Create(ctx *gin.Context) {
 		return
 	}
 
-	newUser, err := entities.NewUser(0, newUserReq.Name, 0)
+	newUser, err := entities.NewUser(0, newUserReq.Name, 0, newUserReq.Role)
 	if err != nil {
 		return
 	}

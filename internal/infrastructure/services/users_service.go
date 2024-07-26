@@ -25,7 +25,7 @@ func (u *usersService) Create(user *entities.User) (entities.User, error) {
 		return entities.User{}, err
 	}
 
-	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints))
+	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Name))
 }
 
 func (u *usersService) GetAll() ([]*entities.User, error) {
@@ -37,7 +37,7 @@ func (u *usersService) GetAll() ([]*entities.User, error) {
 	}
 
 	for _, u := range dbUsers {
-		ec, err := entities.NewUser(int32(u.ID), u.Name, int32(u.TotalPoints))
+		ec, err := entities.NewUser(int32(u.ID), u.Name, int32(u.TotalPoints), entities.Role(u.Role))
 		if err != nil {
 			fmt.Printf("%s", err.Error())
 			continue
@@ -54,5 +54,5 @@ func (u *usersService) GetById(id int32) (entities.User, error) {
 		return entities.User{}, err
 	}
 
-	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints))
+	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Role))
 }

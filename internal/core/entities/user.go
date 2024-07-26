@@ -6,9 +6,10 @@ type User struct {
 	id          int32
 	name        string
 	totalPoints int32
+	role        Role
 }
 
-func NewUser(id int32, name string, totalPoints int32) (User, error) {
+func NewUser(id int32, name string, totalPoints int32, role Role) (User, error) {
 	err := guards.GuardAgainstZeroNegative(id)
 	if err != nil {
 		return User{}, err
@@ -18,7 +19,7 @@ func NewUser(id int32, name string, totalPoints int32) (User, error) {
 		return User{}, err
 	}
 
-	return User{id, name, totalPoints}, nil
+	return User{id, name, totalPoints, role}, nil
 }
 
 func (u *User) Id() int32 {
@@ -31,4 +32,18 @@ func (u *User) Name() string {
 
 func (u *User) TotalPoints() int32 {
 	return u.totalPoints
+}
+
+func (u *User) Role() Role {
+	return u.role
+}
+
+type Role string
+
+var RoleEnum = struct {
+	Admin Role
+	User  Role
+}{
+	Admin: "Admin",
+	User: "User",
 }

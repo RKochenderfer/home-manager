@@ -10,6 +10,7 @@ type User struct {
 	gorm.Model
 	Name        string `gorm:"index"`
 	TotalPoints uint
+	Role        string `gorm:"size:20;index"`
 
 	Assignments []Assignment `gorm:"foreignKey:ID"`
 	Redemptions []Redemption `gorm:"foreignKey:ID"`

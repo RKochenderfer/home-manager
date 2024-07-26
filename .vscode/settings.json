@@ -3,9 +3,14 @@
 		"chorerepo",
 		"chorescontroller",
 		"choreservice",
+		"gonic",
 		"gorm",
 		"internalerrors",
 		"valueobjects"
 	],
-	"git.ignoreLimitWarning": true
+	"git.ignoreLimitWarning": true,
+	"gopls": { "ui.semanticTokens": true },
+	"[go]": {
+		"editor.formatOnSave": true
+	}
 }
