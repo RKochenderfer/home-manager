@@ -15,7 +15,7 @@ func NewUsersService(repo repositories.UserRepo) (UsersService, error) {
 	return &usersService{repo}, nil
 }
 
-func (u *usersService) Create(user *entities.User) (entities.User, error) {
+func (u *usersService) Create(user *entities.User) (*entities.User, error) {
 	dbUser, err := u.repo.Create(&models.User{
 		Name: user.Name(),
 		TotalPoints: uint(user.TotalPoints()),
@@ -23,7 +23,7 @@ func (u *usersService) Create(user *entities.User) (entities.User, error) {
 	})
 
 	if err != nil {
-		return entities.User{}, err
+		return nil, err
 	}
 
 	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Name))
@@ -43,16 +43,16 @@ func (u *usersService) GetAll() ([]*entities.User, error) {
 			fmt.Printf("%s", err.Error())
 			continue
 		}
-		users = append(users, &ec)
+		users = append(users, ec)
 	}
 
 	return users, nil
 }
 
-func (u *usersService) GetById(id int32) (entities.User, error) {
+func (u *usersService) GetById(id int32) (*entities.User, error) {
 	dbUser, err := u.repo.GetById(id)
 	if err != nil {
-		return entities.User{}, err
+		return nil, err
 	}
 
 	return entities.NewUser(int32(dbUser.ID), dbUser.Name, int32(dbUser.TotalPoints), entities.Role(dbUser.Role))

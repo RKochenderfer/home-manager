@@ -61,7 +61,7 @@ func (rc *RoomsController) Create(ctx *gin.Context) {
 		return
 	}
 
-	room, err := rc.roomService.Create(&newRoom)
+	room, err := rc.roomService.Create(newRoom)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, &room)
 		return

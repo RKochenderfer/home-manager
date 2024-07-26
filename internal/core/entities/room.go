@@ -16,14 +16,14 @@ func (r *Room)GetName() string {
 }
 
 
-func NewRoom(id int32, name string) (Room, error) {
+func NewRoom(id int32, name string) (*Room, error) {
 	if err := shared.GuardAgainstZeroNegative(id); err != nil {
-		return Room{}, err
+		return nil, err
 	}
 
 	if err := shared.GuardAgainstEmptyOrWhitespace(name); err != nil {
-		return Room{}, err
+		return nil, err
 	}
 
-	return Room{id, name}, nil
+	return &Room{id, name}, nil
 }

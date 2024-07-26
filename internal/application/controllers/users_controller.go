@@ -41,7 +41,7 @@ func (uc *UsersController) GetById(ctx *gin.Context) {
 	if errors.Is(err, internalerrors.NotFoundError) {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
 	} else {
-		mapped := models.FromUser(&user)
+		mapped := models.FromUser(user)
 		ctx.JSON(http.StatusOK, mapped)
 	}
 }
@@ -58,9 +58,9 @@ func (uc *UsersController) Create(ctx *gin.Context) {
 		return
 	}
 
-	user, err := uc.usersService.Create(&newUser)
+	user, err := uc.usersService.Create(newUser)
 	if err != nil {
 		return
 	}
-	ctx.JSON(http.StatusCreated, models.FromUser(&user))
+	ctx.JSON(http.StatusCreated, models.FromUser(user))
 }

@@ -9,17 +9,17 @@ type User struct {
 	role        Role
 }
 
-func NewUser(id int32, name string, totalPoints int32, role Role) (User, error) {
+func NewUser(id int32, name string, totalPoints int32, role Role) (*User, error) {
 	err := guards.GuardAgainstZeroNegative(id)
 	if err != nil {
-		return User{}, err
+		return nil, err
 	}
 	err = guards.GuardAgainstEmptyOrWhitespace(name)
 	if err != nil {
-		return User{}, err
+		return nil, err
 	}
 
-	return User{id, name, totalPoints, role}, nil
+	return &User{id, name, totalPoints, role}, nil
 }
 
 func (u *User) Id() int32 {

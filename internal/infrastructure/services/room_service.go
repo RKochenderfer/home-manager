@@ -16,11 +16,11 @@ func NewRoomService(repo repositories.RoomRepo) (RoomService, error) {
 }
 
 // Create implements RoomService.
-func (r *roomService) Create(room *entities.Room) (entities.Room, error) {
+func (r *roomService) Create(room *entities.Room) (*entities.Room, error) {
 	dbRoom := &models.Room{Name: room.GetName()}
 	res, err := r.repo.Create(dbRoom)
 	if err != nil {
-		return entities.Room{}, nil
+		return nil, err
 	}
 
 	return entities.NewRoom(int32(res.ID), res.Name)
@@ -41,17 +41,17 @@ func (r *roomService) GetAll() ([]*entities.Room, error) {
 			fmt.Printf("%s", err.Error())
 			continue
 		}
-		entityRooms = append(entityRooms, &er)
+		entityRooms = append(entityRooms, er)
 	}
 
 	return entityRooms, nil
 }
 
 // GetById implements RoomService.
-func (r *roomService) GetById(id int32) (entities.Room, error) {
+func (r *roomService) GetById(id int32) (*entities.Room, error) {
 	dbRoom, err := r.repo.GetById(id)
 	if err != nil {
-		return entities.Room{}, err
+		return nil, err
 	}
 
 	return entities.NewRoom(int32(dbRoom.ID), dbRoom.Name)
