@@ -1,7 +1,9 @@
 package valueobjects
 
 import (
+	"fmt"
 	"home-manager/server/internal/core/entities"
+	"reflect"
 
 	guards "home-manager/server/internal/core/shared"
 )
@@ -43,8 +45,11 @@ func (a *Assignment) Status() AssignmentStatus {
 }
 
 func NewAssignment(assignedTo entities.User, choreAssigned Chore, scalar string, assignmentStatus AssignmentStatus) (ValueObject, error) {
-	err := guards.GuardAgainstEmptyOrWhitespace(scalar)
-	if err != nil {
+	if err := guards.GuardAgainstEmptyOrWhitespace(scalar); err != nil {
+		return Assignment{}, err
+	}
+
+	if err := GuardAgainstInvalidAssignmentStatus(assignmentStatus); err != nil {
 		return Assignment{}, err
 	}
 
@@ -65,4 +70,31 @@ var AssignmentStatusEnum = struct {
 	ReadyForReview: "ReadyForReview",
 	Completed:      "Completed",
 	Canceled:       "Canceled",
+}
+
+var reflectedValues []string // lazy load in enum values
+
+func GuardAgainstInvalidAssignmentStatus(as AssignmentStatus) error {
+	v := getAssignmentStatusEnumValues()
+
+	for _, s := range v {
+		if s == string(as) { return nil }
+	}
+
+	return fmt.Errorf("assignment status %s, is not valid", as)
+}
+
+func getAssignmentStatusEnumValues() []string {
+	if reflectedValues != nil { return reflectedValues }
+
+	v := reflect.ValueOf(AssignmentStatusEnum)
+	vals := make([]string, v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+        reflectedField := v.Field(i).Interface()
+		as := reflectedField.(AssignmentStatus)
+		vals[i] = string(as)
+    }
+
+	reflectedValues = vals
+	return reflectedValues
 }
