@@ -1,14 +1,12 @@
 import { Navbar } from './Navbar'
 import { ParentComponent } from 'solid-js'
 
-export const Layout: ParentComponent = (props: any) => {
+export const Layout: ParentComponent = (props) => {
 	return (
-		<div class="container-fluid">
-			<header>
-				<Navbar />
-			</header>
-			{props.children}
+		<>
+			<Navbar />
+			<div class="container-fluid">{props.children}</div>
 			<footer>Footer</footer>
-		</div>
+		</>
 	)
 }
