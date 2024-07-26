@@ -1,6 +1,6 @@
 package models
 
-import "home-manager/server/internal/core/entities"
+import "home-manager/server/internal/core/valueobjects"
 
 type ChoreResponse struct {
 	Id           int32  `json:"id"`
@@ -10,8 +10,14 @@ type ChoreResponse struct {
 	RoomId       int32  `json:"roomId"`
 }
 
-func FromChore(c *entities.Chore) ChoreResponse {
-	return ChoreResponse{c.Id(), c.Name(), c.Instructions(), c.Points(), c.RoomId()}
+func ChoreResponseFrom(c *valueobjects.Chore) ChoreResponse {
+	return ChoreResponse{
+		Id: c.Id(),
+		Name: c.Name(),
+		Instructions: c.Instructions(),
+		Points: c.Points(),
+		RoomId: c.RoomId(),
+	}
 }
 
 type NewChoreRequest struct {

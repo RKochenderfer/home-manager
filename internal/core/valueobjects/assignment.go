@@ -1,4 +1,4 @@
-package value_objects
+package valueobjects
 
 import (
 	"home-manager/server/internal/core/entities"
@@ -8,7 +8,7 @@ import (
 
 type Assignment struct {
 	assignedTo    entities.User
-	choreAssigned entities.Chore
+	choreAssigned Chore
 	scalar        string
 }
 
@@ -16,7 +16,7 @@ func (a *Assignment) GetAssignedTo() entities.User {
 	return a.assignedTo
 }
 
-func (a *Assignment) GetChoreAssigned() entities.Chore {
+func (a *Assignment) GetChoreAssigned() Chore {
 	return a.choreAssigned
 }
 
@@ -24,7 +24,7 @@ func (a *Assignment) GetScalar() string {
 	return a.scalar
 }
 
-func NewAssignment(assignedTo entities.User, choreAssigned entities.Chore, scalar string) (Assignment, error) {
+func NewAssignment(assignedTo entities.User, choreAssigned Chore, scalar string) (Assignment, error) {
 	err := guards.GuardAgainstEmptyOrWhitespace(scalar)
 	if err != nil {
 		return Assignment{}, err

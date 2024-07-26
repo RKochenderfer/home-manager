@@ -4,7 +4,8 @@
 		"chorescontroller",
 		"choreservice",
 		"gorm",
-		"internalerrors"
+		"internalerrors",
+		"valueobjects"
 	],
 	"git.ignoreLimitWarning": true
 }

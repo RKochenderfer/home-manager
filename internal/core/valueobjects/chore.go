@@ -1,4 +1,4 @@
-package entities
+package valueobjects
 
 import guards "home-manager/server/internal/core/shared"
 

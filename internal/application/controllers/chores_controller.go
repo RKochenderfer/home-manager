@@ -4,8 +4,8 @@ import (
 	"errors"
 	"home-manager/server/internal/application/mappers"
 	"home-manager/server/internal/application/models"
-	"home-manager/server/internal/core/entities"
 	"home-manager/server/internal/core/internalerrors"
+	"home-manager/server/internal/core/valueobjects"
 	"home-manager/server/internal/infrastructure/services"
 	"net/http"
 	"strconv"
@@ -41,7 +41,7 @@ func (cc *ChoresController) GetById(ctx *gin.Context) {
 	if errors.Is(err, internalerrors.NotFoundError) {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
 	} else {
-		mapped := models.FromChore(&chore)
+		mapped := models.ChoreResponseFrom(&chore)
 		ctx.JSON(http.StatusOK, mapped)
 	}
 }
@@ -53,7 +53,7 @@ func (cc *ChoresController) Create(ctx *gin.Context) {
 		return
 	}
 
-	newChore, err := entities.NewChore(0, newChoreReq.Name, newChoreReq.Instructions, newChoreReq.Points, newChoreReq.RoomId)
+	newChore, err := valueobjects.NewChore(0, newChoreReq.Name, newChoreReq.Instructions, newChoreReq.Points, newChoreReq.RoomId)
 	if err != nil {
 		return
 	}
@@ -62,5 +62,5 @@ func (cc *ChoresController) Create(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	ctx.JSON(http.StatusCreated, models.FromChore(&chore))
+	ctx.JSON(http.StatusCreated, models.ChoreResponseFrom(&chore))
 }

@@ -1,11 +1,14 @@
 package services
 
-import "home-manager/server/internal/core/entities"
+import (
+	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/valueobjects"
+)
 
 type ChoresService interface {
-	GetAll() ([]*entities.Chore, error)
-	GetById(id int32) (entities.Chore, error)
-	Create(chore *entities.Chore) (entities.Chore, error)
+	GetAll() ([]*valueobjects.Chore, error)
+	GetById(id int32) (valueobjects.Chore, error)
+	Create(chore *valueobjects.Chore) (valueobjects.Chore, error)
 }
 
 type UsersService interface {
