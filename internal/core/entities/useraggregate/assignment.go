@@ -1,38 +1,29 @@
-package valueobjects
+package useraggregate
 
 import (
+	"errors"
 	"fmt"
-	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/valueobjects"
 	"reflect"
 
 	guards "home-manager/server/internal/core/shared"
+
+	"github.com/google/uuid"
 )
 
 type Assignment struct {
-	assignedTo    entities.User
-	choreAssigned Chore
+	id            uuid.UUID
+	assignedTo    *User
+	choreAssigned valueobjects.Chore
 	scalar        string
 	status        AssignmentStatus
 }
 
-// PartialEq implements ValueObject.
-func (a Assignment) PartialEq(v ValueObject) bool {
-	other, ok := v.(Assignment)
-	if !ok {
-		return false
-	}
-
-	return a.assignedTo == other.AssignedTo() &&
-		a.choreAssigned == other.ChoreAssigned() &&
-		a.scalar == other.Scalar() &&
-		a.status == other.Status()
-}
-
-func (a *Assignment) AssignedTo() entities.User {
+func (a *Assignment) AssignedTo() *User {
 	return a.assignedTo
 }
 
-func (a *Assignment) ChoreAssigned() Chore {
+func (a *Assignment) ChoreAssigned() valueobjects.Chore {
 	return a.choreAssigned
 }
 
@@ -44,16 +35,40 @@ func (a *Assignment) Status() AssignmentStatus {
 	return a.status
 }
 
-func NewAssignment(assignedTo entities.User, choreAssigned Chore, scalar string, assignmentStatus AssignmentStatus) (ValueObject, error) {
+func NewAssignment(assignedTo *User, choreAssigned valueobjects.Chore, scalar string, assignmentStatus AssignmentStatus) (*Assignment, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(scalar); err != nil {
-		return Assignment{}, err
+		return nil, err
 	}
 
 	if err := GuardAgainstInvalidAssignmentStatus(assignmentStatus); err != nil {
-		return Assignment{}, err
+		return nil, err
 	}
 
-	return Assignment{assignedTo, choreAssigned, scalar, assignmentStatus}, nil
+	return &Assignment{uuid.New(), assignedTo, choreAssigned, scalar, assignmentStatus}, nil
+}
+
+func AssignmentFrom(id uuid.UUID, choreAssigned valueobjects.Chore, scalar string, status AssignmentStatus) (*Assignment, error) {
+	if err := guards.GuardAgainstZeroUuid(id); err != nil {
+		return nil, err
+	}
+	if err := guards.GuardAgainstEmptyOrWhitespace(scalar); err != nil {
+		return nil, err
+	}
+
+	if err := GuardAgainstInvalidAssignmentStatus(status); err != nil {
+		return nil, err
+	}
+
+	return &Assignment{id: uuid.New(),choreAssigned: choreAssigned, scalar: scalar,status: status}, nil
+}
+
+func (a *Assignment) SetAssignedTo(user *User) error {
+	if user == nil {
+		return errors.New("assigned to user cannot be nil")
+	}
+	
+	a.assignedTo = user
+	return nil
 }
 
 type AssignmentStatus string
@@ -78,22 +93,26 @@ func GuardAgainstInvalidAssignmentStatus(as AssignmentStatus) error {
 	v := getAssignmentStatusEnumValues()
 
 	for _, s := range v {
-		if s == string(as) { return nil }
+		if s == string(as) {
+			return nil
+		}
 	}
 
 	return fmt.Errorf("assignment status %s, is not valid", as)
 }
 
 func getAssignmentStatusEnumValues() []string {
-	if reflectedValues != nil { return reflectedValues }
+	if reflectedValues != nil {
+		return reflectedValues
+	}
 
 	v := reflect.ValueOf(AssignmentStatusEnum)
 	vals := make([]string, v.NumField())
 	for i := 0; i < v.NumField(); i++ {
-        reflectedField := v.Field(i).Interface()
+		reflectedField := v.Field(i).Interface()
 		as := reflectedField.(AssignmentStatus)
 		vals[i] = string(as)
-    }
+	}
 
 	reflectedValues = vals
 	return reflectedValues

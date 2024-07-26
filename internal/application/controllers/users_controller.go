@@ -4,7 +4,7 @@ import (
 	"errors"
 	"home-manager/server/internal/application/mappers"
 	"home-manager/server/internal/application/models"
-	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/entities/useraggregate"
 	"home-manager/server/internal/core/internalerrors"
 	"home-manager/server/internal/infrastructure/services"
 	"net/http"
@@ -53,7 +53,7 @@ func (uc *UsersController) Create(ctx *gin.Context) {
 		return
 	}
 
-	newUser, err := entities.NewUser(newUserReq.Name, 0, newUserReq.Role)
+	newUser, err := useraggregate.NewUser(newUserReq.Name, 0, newUserReq.Role)
 	if err != nil {
 		return
 	}

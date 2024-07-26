@@ -62,7 +62,7 @@ func NewChore(id int32, name string, instructions string, points int32, roomId i
 	return Chore{id, name, instructions, points, roomId}, nil
 }
 
-func From(name string, instructions string, points int32, roomId int32) (Chore, error) {
+func ChoreFrom(name string, instructions string, points int32, roomId int32) (Chore, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return Chore{}, err
 	}

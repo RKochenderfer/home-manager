@@ -2,6 +2,7 @@ package services
 
 import (
 	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/entities/useraggregate"
 	"home-manager/server/internal/core/valueobjects"
 
 	"github.com/google/uuid"
@@ -14,9 +15,9 @@ type ChoresService interface {
 }
 
 type UsersService interface {
-	GetAll() ([]*entities.User, error)
-	GetById(id uuid.UUID) (*entities.User, error)
-	Create(user *entities.User) (*entities.User, error)
+	GetAll() ([]useraggregate.User, error)
+	GetById(id uuid.UUID) (*useraggregate.User, error)
+	Create(user *useraggregate.User) (*useraggregate.User, error)
 }
 
 type RoomService interface {

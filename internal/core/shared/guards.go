@@ -3,6 +3,8 @@ package shared
 import (
 	"errors"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 func GuardAgainstEmptyOrWhitespace(str string) error {
@@ -18,5 +20,12 @@ func GuardAgainstZeroNegative(num int32) error {
 		return errors.New("Number cannot be <= 0")
 	}
 
+	return nil
+}
+
+func GuardAgainstZeroUuid(id uuid.UUID) error {
+	if id == uuid.Nil {
+		return errors.New("UUID cannot be the 0 UUID")
+	}
 	return nil
 }

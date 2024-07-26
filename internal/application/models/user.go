@@ -1,7 +1,7 @@
 package models
 
 import (
-	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/entities/useraggregate"
 
 	"github.com/google/uuid"
 )
@@ -13,11 +13,11 @@ type UserResponse struct {
 	Role        string `json:"role"`
 }
 
-func FromUser(u *entities.User) UserResponse {
+func FromUser(u *useraggregate.User) UserResponse {
 	return UserResponse{u.Id(), u.Name(), u.TotalPoints(), string(u.Role())}
 }
 
 type NewUserRequest struct {
 	Name string        `json:"name"`
-	Role entities.Role `json:"role"`
+	Role useraggregate.Role `json:"role"`
 }

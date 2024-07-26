@@ -13,7 +13,7 @@ type ChoreRepo interface {
 }
 
 type UserRepo interface {
-	GetAll() ([]*models.User, error)
+	GetAll() ([]models.User, error)
 	GetById(id uuid.UUID) (models.User, error)
 	Create(user *models.User) (models.User, error)
 }

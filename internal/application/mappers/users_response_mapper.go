@@ -2,14 +2,14 @@ package mappers
 
 import (
 	"home-manager/server/internal/application/models"
-	"home-manager/server/internal/core/entities"
+	"home-manager/server/internal/core/entities/useraggregate"
 )
 
-func ToUserListResponse(users []*entities.User) []*models.UserResponse {
+func ToUserListResponse(users []useraggregate.User) []*models.UserResponse {
 	var responseList []*models.UserResponse
 
 	for _, user := range users {
-		mapped := models.FromUser(user)
+		mapped := models.FromUser(&user)
 		responseList = append(responseList, &mapped)
 	}
 

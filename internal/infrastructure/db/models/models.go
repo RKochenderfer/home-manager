@@ -43,7 +43,7 @@ type Chore struct {
 }
 
 type Assignment struct {
-	gorm.Model
+	Base
 	CreatedByUserID  uint `gorm:"index"`
 	AssignedToUserID uint `gorm:"index"`
 	ChoreAssignedID  uint `gorm:"index"`

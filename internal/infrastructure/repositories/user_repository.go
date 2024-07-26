@@ -25,8 +25,8 @@ func (s *sqliteUserRepo) Create(user *models.User) (models.User, error) {
 }
 
 // GetAll implements UserRepo.
-func (s *sqliteUserRepo) GetAll() ([]*models.User, error) {
-	var users []*models.User
+func (s *sqliteUserRepo) GetAll() ([]models.User, error) {
+	var users []models.User
 
 	if result := s.db.Connection().Find(&users); result.Error != nil {
 		return users, result.Error

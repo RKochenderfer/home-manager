@@ -6,6 +6,7 @@
 		"gonic",
 		"gorm",
 		"internalerrors",
+		"useraggregate",
 		"valueobjects"
 	],
 	"git.ignoreLimitWarning": true,

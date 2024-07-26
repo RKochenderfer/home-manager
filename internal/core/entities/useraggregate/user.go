@@ -1,4 +1,4 @@
-package entities
+package useraggregate
 
 import (
 	"fmt"
@@ -13,6 +13,8 @@ type User struct {
 	name        string
 	totalPoints int32
 	role        Role
+
+	assignments []Assignment
 }
 
 func NewUser(name string, totalPoints int32, role Role) (*User, error) {
@@ -23,10 +25,10 @@ func NewUser(name string, totalPoints int32, role Role) (*User, error) {
 		return nil, err
 	}
 
-	return &User{uuid.New(), name, totalPoints, role}, nil
+	return &User{uuid.New(), name, totalPoints, role, nil}, nil
 }
 
-func From(id uuid.UUID, name string, totalPoints int32, role Role) (*User, error) {
+func UserFrom(id uuid.UUID, name string, totalPoints int32, role Role, assignments []Assignment) (*User, error) {
 	if err := guards.GuardAgainstEmptyOrWhitespace(name); err != nil {
 		return nil, err
 	}
@@ -34,7 +36,7 @@ func From(id uuid.UUID, name string, totalPoints int32, role Role) (*User, error
 		return nil, err
 	}
 
-	return &User{id, name, totalPoints, role}, nil
+	return &User{id, name, totalPoints, role, assignments}, nil
 }
 
 func (u *User) Id() uuid.UUID {
@@ -54,6 +56,7 @@ func (u *User) Role() Role {
 }
 
 type Role string
+
 var reflectValues []string
 
 var RoleEnum = struct {
@@ -61,14 +64,16 @@ var RoleEnum = struct {
 	User  Role
 }{
 	Admin: "Admin",
-	User: "User",
+	User:  "User",
 }
 
 func GuardAgainstInvalidRole(r Role) error {
 	v := getRoleEnumValues()
 
 	for _, s := range v {
-		if s == string(r) { return nil }
+		if s == string(r) {
+			return nil
+		}
 	}
 
 	return fmt.Errorf("role %s, is not a valid role", r)
@@ -82,12 +87,11 @@ func getRoleEnumValues() []string {
 	v := reflect.ValueOf(RoleEnum)
 	vals := make([]string, v.NumField())
 	for i := 0; i < v.NumField(); i++ {
-        reflectedField := v.Field(i).Interface()
+		reflectedField := v.Field(i).Interface()
 		role := reflectedField.(Role)
 		vals[i] = string(role)
-    }
+	}
 
 	reflectValues = vals
 	return reflectValues
 }
-

@@ -21,27 +21,44 @@ classDiagram
 		+CreateChore(chore Chore)
 	}
 
-	class Assignment{
-		-id uint32
-		-assignedTo User
-		-choreAssigned Chore
-		-scalar string
-		-dueDate DateTime
-		-completedAt DateTime
-		-status AssignmentStatus
-		+ReadyForReview()
-		+Complete()
-		+UpdateStatus(status AssignmentStatus)
-	}
-
-	class User{
+	namespace UserAggregate {
+		class User{
 		-id uint32
 		-name string
 		-role string
 		-totalPoints uint32
 		+Redeem(reward Reward)
 		+AddPoints(points uint32)
+		+GetAssignments()
+		}
+		class Assignment{
+			-id uint32
+			-assignedTo User
+			-choreAssigned Chore
+			-scalar string
+			-dueDate DateTime
+			-completedAt DateTime
+			-status AssignmentStatus
+			+ReadyForReview()
+			+Complete()
+			+UpdateStatus(status AssignmentStatus)
+		}
+		class Role {
+		<<enumeration>>
+		Admin
+		User
 	}
+
+	class AssignmentStatus {
+		<<enumeration>>
+		NotStarted
+		Started
+		ReadyForReview
+		Completed
+		Canceled
+	}
+	}
+
 
 	class Reward{
 		-id uint32
@@ -55,20 +72,5 @@ classDiagram
 		-user User
 		-reward Reward
 		-redemptionDate DateTime
-	}
-
-	class Role {
-		<<enumeration>>
-		Admin
-		User
-	}
-
-	class AssignmentStatus {
-		<<enumeration>>
-		NotStarted
-		Started
-		ReadyForReview
-		Completed
-		Canceled
 	}
 ```
