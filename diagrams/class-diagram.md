@@ -5,19 +5,20 @@ classDiagram
 	User "1" *-- "*" Redemption
 	Room "1" *-- "*" Chore
 	Reward "*" o-- "1" Redemption
+	Assignment .. AssignmentStatus
+	User .. Role
 
 	class Chore{
-		-id uint32
 		-name string
 		-description string
 		-points uint32
 		-room Room
-		+Assign(user User)
 	}
 
 	class Room {
 		-id uint32
 		-name string
+		+CreateChore(chore Chore)
 	}
 
 	class Assignment{
@@ -26,7 +27,11 @@ classDiagram
 		-choreAssigned Chore
 		-scalar string
 		-dueDate DateTime
-		-completedAt 
+		-completedAt DateTime
+		-status AssignmentStatus
+		+ReadyForReview()
+		+Complete()
+		+UpdateStatus(status AssignmentStatus)
 	}
 
 	class User{
@@ -35,6 +40,7 @@ classDiagram
 		-role string
 		-totalPoints uint32
 		+Redeem(reward Reward)
+		+AddPoints(points uint32)
 	}
 
 	class Reward{
@@ -49,5 +55,20 @@ classDiagram
 		-user User
 		-reward Reward
 		-redemptionDate DateTime
+	}
+
+	class Role {
+		<<enumeration>>
+		Admin
+		User
+	}
+
+	class AssignmentStatus {
+		<<enumeration>>
+		NotStarted
+		Started
+		ReadyForReview
+		Completed
+		Canceled
 	}
 ```

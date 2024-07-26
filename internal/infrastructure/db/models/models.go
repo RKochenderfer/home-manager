@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Name        string       `gorm:"index"`
+	Name        string `gorm:"index"`
 	TotalPoints uint
 
 	Assignments []Assignment `gorm:"foreignKey:ID"`
@@ -17,16 +17,16 @@ type User struct {
 
 type Room struct {
 	gorm.Model
-	Name   string  `gorm:"uniqueIndex"`
+	Name string `gorm:"uniqueIndex"`
 
 	Chores []Chore `gorm:"constraint:OnDelete:CASCADE"`
 }
 
 type Chore struct {
 	gorm.Model
-	Name         string      `gorm:"index"`
+	Name         string `gorm:"index"`
 	Instructions string
-	Points       uint        `gorm:"index"`
+	Points       uint `gorm:"index"`
 	RoomID       uint
 	Room         Room
 
@@ -35,15 +35,16 @@ type Chore struct {
 
 type Assignment struct {
 	gorm.Model
-	CreatedByUserID  uint      `gorm:"index"`
-	AssignedToUserID uint      `gorm:"index"`
-	ChoreAssignedID  uint      `gorm:"index"`
+	CreatedByUserID  uint `gorm:"index"`
+	AssignedToUserID uint `gorm:"index"`
+	ChoreAssignedID  uint `gorm:"index"`
 	Scalar           string
 	DueDate          time.Time `gorm:"index"`
+	AssignmentStatus string `gorm:"default:NotStarted;size:20;index"`
 
-	ChoreAssigned    Chore
-	CreatedByUser    User
-	AssignedToUser   User
+	ChoreAssigned  Chore
+	CreatedByUser  User
+	AssignedToUser User
 }
 
 type Redemption struct {
@@ -52,16 +53,16 @@ type Redemption struct {
 	RedemptionDate time.Time `gorm:"index"`
 	RewardID       uint
 
-	User           User
-	Reward         Reward
+	User   User
+	Reward Reward
 }
 
 type Reward struct {
 	gorm.Model
-	Name         string       `gorm:"index"`
+	Name         string `gorm:"index"`
 	Description  string
-	Cost         uint         `gorm:"index"`
+	Cost         uint `gorm:"index"`
 	RedemptionID uint
 
-	Redemption  []Redemption
+	Redemption []Redemption
 }

@@ -68,3 +68,7 @@ func (rc *RoomsController) Create(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, models.RoomResponse{Id: room.GetId(), Name: room.GetName()})
 }
+
+func (rc *RoomsController) CreateChore(ctx *gin.Context) {
+	panic("unimplemented")
+}
