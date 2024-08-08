@@ -1,0 +1,15 @@
+syntax = "proto3";
+package homemanager;
+
+import public "room_models.proto";
+import public "users_models.proto";
+
+option go_package = "home-manager/homemanager";
+
+service RoomService {
+	rpc Create (CreateRoomRequest) returns (CreateRoomResponse);
+}
+
+service UsersService {
+	rpc Create (CreateUserRequest) returns (CreateUserResponse);
+}
