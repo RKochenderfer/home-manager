@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
 )
 
 require (

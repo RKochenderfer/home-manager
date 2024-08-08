@@ -30,7 +30,7 @@ func (uc *UsersController) GetAll(ctx *gin.Context) {
 
 func (uc *UsersController) GetById(ctx *gin.Context) {
 	idParam := ctx.Param("id")
-	
+
 	parsed, err := uuid.Parse(idParam)
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, errors.New("unable to parse id to integer"))
@@ -38,7 +38,7 @@ func (uc *UsersController) GetById(ctx *gin.Context) {
 
 	user, err := uc.usersService.GetById(parsed)
 
-	if errors.Is(err, internalerrors.NotFoundError) {
+	if errors.Is(err, internalerrors.ErrNotFound) {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "chore was not found"})
 	} else {
 		mapped := models.FromUser(user)

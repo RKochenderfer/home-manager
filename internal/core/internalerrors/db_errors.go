@@ -4,4 +4,4 @@ import (
 	"errors"
 )
 
-var NotFoundError = errors.New("Not found")
+var ErrNotFound = errors.New("record not found")

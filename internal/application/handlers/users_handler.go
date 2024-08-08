@@ -48,8 +48,8 @@ func (uh *UsersHandler) Get(ctx context.Context, req *pb.GetUserRequest) (*pb.Ge
 
 	user, err := uh.usersService.GetById(parsed)
 
-	if errors.Is(err, internalerrors.NotFoundError) {
-		return nil, status.Error(codes.Internal, err.Error())
+	if errors.Is(err, internalerrors.ErrNotFound) {
+		return nil, status.Error(codes.NotFound, err.Error())
 	} else {
 		return mappers.ToGetUserResponse(user), nil
 	}
