@@ -3,30 +3,14 @@ package homemanager;
 
 option go_package = "home-manager/homemanager";
 
-message User {
-	string id = 1;
-	string name = 2;
-	int32 totalPoints = 3;
-	string role = 4;
-}
-
 message CreateUserRequest {
 	string name = 1;
 	string role = 2;
 }
 
 message CreateUserResponse {
-	User user = 1;
-}
-
-message GetUserRequest {
 	string id = 1;
-}
-
-message GetUserResponse {
-	User user = 1;
-}
-
-message GetAllUsersResponse {
-	repeated User users = 1;
+	string name = 2;
+	int32 totalPoints = 3;
+	string role = 4;
 }

@@ -20,7 +20,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	application.SetupServers(s, &db)
+	application.SetupServers(db, s)
 	reflection.Register(s)
 
 	log.Printf("server listening at %v", lis.Addr())

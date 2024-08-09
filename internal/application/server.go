@@ -1,23 +1,19 @@
 package application
 
 import (
+	"flag"
 	pb "home-manager/server/homemanager/gen"
 	"home-manager/server/internal/application/handlers"
 	"home-manager/server/internal/infrastructure/db"
-	"home-manager/server/internal/infrastructure/repositories"
-	"home-manager/server/internal/infrastructure/services"
 
 	"google.golang.org/grpc"
 )
 
-func SetupServers(s *grpc.Server, db *db.Database) {
-	SetupUserServer(s, db)
+var (
+	port = flag.Int("port", 50051, "gRPC server port")
+)
+
+func SetupServers(db db.Database, s *grpc.Server) {
+	pb.RegisterUsersServiceServer(s, &handlers.UsersHandler{})
 	pb.RegisterRoomServiceServer(s, &handlers.RoomsHandler{})
-}
-
-func SetupUserServer(s *grpc.Server, db *db.Database) {
-	repo := repositories.NewSqliteUserRepo(db)
-	us, _ := services.NewUsersService(repo)
-
-	handlers.NewUsersServer(s, &us)
 }
