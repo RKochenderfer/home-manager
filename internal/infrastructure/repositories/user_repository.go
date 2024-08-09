@@ -28,8 +28,8 @@ func (s *sqliteUserRepo) Create(user *models.User) (models.User, error) {
 func (s *sqliteUserRepo) GetAll() ([]models.User, error) {
 	var users []models.User
 
-	if result := s.db.Connection().Find(&users); result.Error != nil {
-		return users, result.Error
+	if result := s.db.Connection().Model(&models.User{}).Preload("Assignments").Find(&users); result.Error != nil {
+		return nil, result.Error
 	}
 
 	return users, nil

@@ -5,7 +5,7 @@ import {
 	NavDropdown,
 } from 'solid-bootstrap'
 
-export const Navbar = (props: any) => {
+export const Navbar = () => {
 	return (
 		<BootstrapNavbar bg="body-tertiary">
 			<Container fluid>
