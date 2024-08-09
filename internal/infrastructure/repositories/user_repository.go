@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"home-manager/server/internal/core/internalerrors"
 	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/db/models"
 
@@ -40,11 +39,8 @@ func (s *sqliteUserRepo) GetAll() ([]models.User, error) {
 func (s *sqliteUserRepo) GetById(id uuid.UUID) (models.User, error) {
 	var user models.User
 	if result := s.db.Connection().First(&user, id); result.Error != nil {
-		if result.Error.Error() == "record not found" {
-			return models.User{}, internalerrors.ErrNotFound
-		}
 		return models.User{}, result.Error
 	}
 
-	return user, nil 
+	return user, nil
 }
