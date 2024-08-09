@@ -54,12 +54,3 @@ func (uh *UsersHandler) Get(ctx context.Context, req *pb.GetUserRequest) (*pb.Ge
 		return mappers.ToGetUserResponse(user), nil
 	}
 }
-
-func (uh *UsersHandler) GetAll(ctx context.Context, req *pb.Empty) (*pb.GetAllUsersResponse, error) {
-	users, err := uh.usersService.GetAll()
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	return mappers.ToGetAllUsersResponse(&users), nil
-}

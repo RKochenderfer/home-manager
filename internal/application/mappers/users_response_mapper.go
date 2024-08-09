@@ -18,28 +18,23 @@ func ToUserListResponse(users []useraggregate.User) []*models.UserResponse {
 }
 
 func ToCreateUserResponse(user *useraggregate.User) *pb.CreateUserResponse {
-	return &pb.CreateUserResponse{User: toProtoUser(user)}
-}
-
-func ToGetUserResponse(user *useraggregate.User) *pb.GetUserResponse {
-	return &pb.GetUserResponse{User: toProtoUser(user)}
-}
-
-func ToGetAllUsersResponse(users *[]useraggregate.User) *pb.GetAllUsersResponse {
-	var res []*pb.User
-	for _, u := range *users {
-		protoUser := toProtoUser(&u)
-		res = append(res, protoUser)
-	}
-
-	return &pb.GetAllUsersResponse{Users: res}
-}
-
-func toProtoUser(user *useraggregate.User) *pb.User {
-	return &pb.User{
+	u := pb.User{
 		Id:          user.Id().String(),
 		Name:        user.Name(),
 		TotalPoints: user.TotalPoints(),
 		Role:        string(user.Role()),
 	}
+
+	return &pb.CreateUserResponse{User: &u}
+}
+
+func ToGetUserResponse(user *useraggregate.User) *pb.GetUserResponse {
+	u := pb.User{
+		Id:          user.Id().String(),
+		Name:        user.Name(),
+		TotalPoints: user.TotalPoints(),
+		Role:        string(user.Role()),
+	}
+
+	return &pb.GetUserResponse{User: &u}
 }
