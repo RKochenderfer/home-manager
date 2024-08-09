@@ -1,6 +1,7 @@
 package application
 
 import (
+	pb "home-manager/server/homemanager/gen"
 	"home-manager/server/internal/application/handlers"
 	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/repositories"
@@ -11,7 +12,7 @@ import (
 
 func SetupServers(s *grpc.Server, db *db.Database) {
 	SetupUserServer(s, db)
-	SetupRoomsServer(s, db)
+	pb.RegisterRoomServiceServer(s, &handlers.RoomsHandler{})
 }
 
 func SetupUserServer(s *grpc.Server, db *db.Database) {
@@ -19,11 +20,4 @@ func SetupUserServer(s *grpc.Server, db *db.Database) {
 	us, _ := services.NewUsersService(repo)
 
 	handlers.NewUsersServer(s, &us)
-}
-
-func SetupRoomsServer(s *grpc.Server, db *db.Database) {
-	repo := repositories.NewSqliteRoomRepo(db)
-	rs, _ := services.NewRoomService(repo)
-
-	handlers.NewRoomsServer(s, &rs)
 }

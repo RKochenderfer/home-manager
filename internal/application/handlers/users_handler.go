@@ -15,18 +15,18 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type usersHandler struct {
+type UsersHandler struct {
 	usersService services.UsersService
 	pb.UnimplementedUsersServiceServer
 }
 
 func NewUsersServer(grpcServer *grpc.Server, userService *services.UsersService) {
-	userGrpc := &usersHandler{usersService: *userService}
+	userGrpc := &UsersHandler{usersService: *userService}
 
 	pb.RegisterUsersServiceServer(grpcServer, userGrpc)
 }
 
-func (uh *usersHandler) Create(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (uh *UsersHandler) Create(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	newUser, err := useraggregate.NewUser(req.GetName(), 0, useraggregate.Role(req.GetRole()))
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, err.Error())
@@ -40,7 +40,7 @@ func (uh *usersHandler) Create(ctx context.Context, req *pb.CreateUserRequest) (
 	return mappers.ToCreateUserResponse(user), nil
 }
 
-func (uh *usersHandler) Get(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+func (uh *UsersHandler) Get(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	parsed, err := uuid.Parse(req.GetId())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -50,12 +50,12 @@ func (uh *usersHandler) Get(ctx context.Context, req *pb.GetUserRequest) (*pb.Ge
 
 	if errors.Is(err, internalerrors.ErrNotFound) {
 		return nil, status.Error(codes.NotFound, err.Error())
+	} else {
+		return mappers.ToGetUserResponse(user), nil
 	}
-
-	return mappers.ToGetUserResponse(user), nil
 }
 
-func (uh *usersHandler) GetAll(ctx context.Context, req *pb.Empty) (*pb.GetAllUsersResponse, error) {
+func (uh *UsersHandler) GetAll(ctx context.Context, req *pb.Empty) (*pb.GetAllUsersResponse, error) {
 	users, err := uh.usersService.GetAll()
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

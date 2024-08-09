@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"home-manager/server/internal/core/internalerrors"
 	"home-manager/server/internal/infrastructure/db"
 	"home-manager/server/internal/infrastructure/db/models"
 )
@@ -15,9 +14,9 @@ func NewSqliteRoomRepo(db *db.Database) RoomRepo {
 }
 
 // Create implements RoomRepo.
-func (s *sqliteRoomRepo) Create(toAdd *models.Room) (*models.Room, error) {
+func (s *sqliteRoomRepo) Create(toAdd *models.Room) (models.Room, error) {
 	if result := s.db.Connection().Create(&toAdd); result.Error != nil {
-		return nil, result.Error
+		return models.Room{}, nil
 	}
 
 	return s.GetById(int32(toAdd.ID))
@@ -35,14 +34,11 @@ func (s *sqliteRoomRepo) GetAll() ([]*models.Room, error) {
 }
 
 // GetById implements RoomRepo.
-func (s *sqliteRoomRepo) GetById(id int32) (*models.Room, error) {
+func (s *sqliteRoomRepo) GetById(id int32) (models.Room, error) {
 	var room models.Room
 	if result := s.db.Connection().First(&room, id); result.Error != nil {
-		if result.Error.Error() == "record not found" {
-			return nil, internalerrors.ErrNotFound
-		}
-		return nil, result.Error
+		return models.Room{}, result.Error
 	}
 
-	return &room, nil
+	return room, nil
 }
