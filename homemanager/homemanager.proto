@@ -10,6 +10,8 @@ message Empty {}
 
 service RoomService {
 	rpc Create (CreateRoomRequest) returns (CreateRoomResponse);
+	rpc Get (GetRoomRequest) returns (GetRoomResponse);
+	rpc GetAll (Empty) returns (GetAllRoomsResponse);
 }
 
 service UsersService {
