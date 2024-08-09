@@ -9,7 +9,7 @@ import (
 )
 
 type ChoresService interface {
-	GetAll() ([]*valueobjects.Chore, error)
+	GetAll() ([]valueobjects.Chore, error)
 	GetById(id int32) (valueobjects.Chore, error)
 	Create(chore *valueobjects.Chore) (valueobjects.Chore, error)
 }

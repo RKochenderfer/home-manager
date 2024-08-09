@@ -15,6 +15,7 @@ func SetupRouter(db db.Database) *gin.Engine {
 	// Public routes
 	setupUsersRoutes(router, &db)
 	setupRoomsRoutes(router, &db)
+	setupChoresRoutes(router, &db)
 
 	// Protected Routes
 
@@ -46,5 +47,19 @@ func setupRoomsRoutes(router *gin.Engine, db *db.Database) {
 		rooms.GET("/", rc.GetAll)
 		rooms.GET("/:id", rc.GetById)
 		rooms.POST("/", rc.Create)
+	}
+}
+
+func setupChoresRoutes(router *gin.Engine, db *db.Database) {
+	repo := repositories.NewSqliteChoreRepo(db)
+	cs, _ := services.NewChoresService(repo)
+
+	cc := controllers.NewChoresController(cs)
+
+	chores := router.Group("api/chores")
+	{
+		chores.GET("/", cc.GetAll)
+		chores.GET("/:id", cc.GetById)
+		chores.POST("/", cc.Create)
 	}
 }

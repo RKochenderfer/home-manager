@@ -23,11 +23,11 @@ func (s *sqliteChoreRepo) Create(toAdd *models.Chore) (models.Chore, error) {
 }
 
 // GetAll implements ChoreRepo.
-func (s *sqliteChoreRepo) GetAll() ([]*models.Chore, error) {
-	var chores []*models.Chore
+func (s *sqliteChoreRepo) GetAll() ([]models.Chore, error) {
+	var chores []models.Chore
 
 	if result := s.db.Connection().Find(&chores); result.Error != nil {
-		return chores, result.Error
+		return nil, result.Error
 	}
 
 	return chores, nil

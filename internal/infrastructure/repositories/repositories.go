@@ -7,7 +7,7 @@ import (
 )
 
 type ChoreRepo interface {
-	GetAll() ([]*models.Chore, error)
+	GetAll() ([]models.Chore, error)
 	GetById(id int32) (models.Chore, error)
 	Create(chore *models.Chore) (models.Chore, error)
 }
