@@ -20,6 +20,6 @@ type UserRepo interface {
 
 type RoomRepo interface {
 	GetAll() ([]*models.Room, error)
-	GetById(id int32) (models.Room, error)
-	Create(room *models.Room) (models.Room, error)
+	GetById(id int32) (*models.Room, error)
+	Create(room *models.Room) (*models.Room, error)
 }

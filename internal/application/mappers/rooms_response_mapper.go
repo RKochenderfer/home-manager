@@ -29,10 +29,10 @@ func ToGetRoomResponse(room *entities.Room) *pb.GetRoomResponse {
 	}
 }
 
-func ToGetAllRoomsResponse(rooms *[]entities.Room) *pb.GetAllRoomsResponse {
+func ToGetAllRoomsResponse(rooms []*entities.Room) *pb.GetAllRoomsResponse {
 	var roomsList []*pb.Room
-	for _, r := range *rooms {
-		er := toRoom(&r)
+	for _, r := range rooms {
+		er := toRoom(r)
 		roomsList = append(roomsList, er)
 	}
 
