@@ -62,5 +62,5 @@ func (uc *UsersController) Create(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	ctx.JSON(http.StatusCreated, models.FromUser(user))
+	ctx.JSON(http.StatusCreated, models.NewUserResponseFrom(user))
 }

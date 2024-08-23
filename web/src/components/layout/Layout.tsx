@@ -5,7 +5,7 @@ export const Layout: ParentComponent = (props) => {
 	return (
 		<>
 			<Navbar />
-			<div class="container-fluid">{props.children}</div>
+			<div class="container-fluid pt-3">{props.children}</div>
 			<footer>Footer</footer>
 		</>
 	)

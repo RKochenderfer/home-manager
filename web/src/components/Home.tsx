@@ -1,4 +1,4 @@
-import {AdminHome} from './Admin/AdminHome'
+import {AdminHome} from './admin/AdminHome'
 
 export const Home = (props: any) => {
 	return (

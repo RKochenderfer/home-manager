@@ -18,6 +18,7 @@ export const Navbar = () => {
 					<Nav class="me-auto">
 						<Nav.Link href="">Rooms</Nav.Link>
 						<Nav.Link href="">Assignments</Nav.Link>
+						<Nav.Link href=""></Nav.Link>
 					</Nav>
 				</BootstrapNavbar.Collapse>
 			</Container>
